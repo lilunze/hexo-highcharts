@@ -14,11 +14,13 @@ npm install hexo-highcharts --save
 ```
 
 you can use ajax data set options:
+```
 {
     url: "",
     method: "GET" || "POST",
     params: { ... }
 }
+```
 
 data format is highcharts options series
 
