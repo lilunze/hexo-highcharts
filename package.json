@@ -1,0 +1,22 @@
+{
+  "name": "hexo-highcharts",
+  "version": "1.0.0",
+  "description": "A simple plugin for inserting Highcharts by using tags in Hexo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Hexo",
+    "Highcharts"
+  ],
+  "dependencies": {
+    "highcharts": "^8.1.2"
+  },
+  "author": "lilunze",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lilunze/hexo-highcharts.git"
+  },
+  "license": "MIT"
+}
