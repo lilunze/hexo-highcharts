@@ -1,5 +1,6 @@
 # hexo-highcharts
 A simple plugin for inserting Highcharts by using tags in Hexo
+[Demo](https://lilunze.github.io/2020/07/25/hexo-highcharts/)
 
 ## Install
 ```
