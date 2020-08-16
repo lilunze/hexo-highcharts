@@ -10,9 +10,6 @@
     "Hexo",
     "Highcharts"
   ],
-  "dependencies": {
-    "highcharts": "^8.1.2"
-  },
   "author": "lilunze",
   "repository": {
     "type": "git",

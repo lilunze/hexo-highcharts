@@ -1,5 +1,3 @@
-const highcharts = require('highcharts');
-
 let uuid = () => {
     let d = new Date();
     let uuid = "uuid" + d.getDay() + d.getHours() + d.getMinutes() + d.getSeconds() + d.getMilliseconds() + Math.ceil(Math.random() * 10000000);
@@ -38,57 +36,30 @@ let highchartsRender = (args,opt) => {
     }
     let id = uuid()
     let template = `
+        <script src="https://code.highcharts.com.cn/highcharts/8.1.2/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/8.1.2/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/8.1.2/modules/annotations.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/8.1.2/modules/oldie.js"></script>
         <div id="highcharts${id}" width="${args[0] || "85%"}" height="${args[1] || 400}"></div>
         <script>
-            window.highcharts = ${highcharts}();
-            var options = Object.assign(${defaultOpt},${options})
-            if(options.url){
-                var xmlHttp = null;
-                if(window.XMLHttpRequest){
-                    xmlHttp = new XMLHttpRequest;
-                }else if(window.ActiveXObject){
-                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");  // 兼容老版本IE
-                }
-                if(xmlHttp !== null){
-                    var httpMethod = (options.method || "GET").toUpperCase();
-                    if(httpMethod == "POST"){
-                        var data = options.params || {};
-                        var requestData = '';
-                        for(var key in data){
-                            requestData = requestData + key + "=" + data[key] + "&";
+            var op = Object.assign(${defaultOpt},${options})
+            if(op.url){
+                $.ajax({
+                    url: op.url,
+                    type: "JSON",
+                    method: op.method || "GET",
+                    success: function(res){
+                        if(op.seriesFormat){
+                            op.series = op.seriesFormat(res)
+                        } else {
+                            op.series = res;
                         }
-                        if(requestData == ''){
-                            requestData = '';
-                        }else{
-                            requestData = requestData.substring(0, requestData.length - 1);
-                        }
+                        var chart = Highcharts.chart(highcharts${id},op);
                     }
-                    if(httpMethod == 'GET'){
-                        xmlHttp.open("GET", options.url, true);
-                        xmlHttp.send(null);
-                    }else if(httpMethod == "POST"){
-                        xmlHttp.open("POST", options.url, true);
-                        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xmlHttp.send(requestData);
-                    }
-                    xmlHttp.onreadystatechange = function(){
-                        if(xmlHttp.readyState == 4){
-                            if(xmlHttp.status == 200){
-                                let res = JSON.parse(xmlHttp.responseText);
-                                if (res) {
-                                    options.series = res;
-                                    var chart = window.highcharts.chart(highcharts${id},options);
-                                } else {
-                                    console.log(res);
-                                }
-                            }
-                        }
-                    }
-                }
+                })
             }else{
-                var chart = window.highcharts.chart(highcharts${id},options);
+                var chart = Highcharts.chart(highcharts${id},op);
             }
-            
         </script>
     `;
     return template;
